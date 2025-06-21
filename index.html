@@ -26,11 +26,24 @@
       width: 80%;
       max-width: 300px;
       box-sizing: border-box;
+      border: none;
+      border-radius: 5px;
+      transition: transform 0.2s, background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #ddd;
+    }
+
+    button:active {
+      transform: scale(0.97);
+      box-shadow: 0 0 10px #aaa;
     }
 
     .result {
       font-size: 18px;
       margin-top: 20px;
+      transition: color 0.5s;
     }
 
     #bestScore {
@@ -45,6 +58,30 @@
         width: 300px;
       }
     }
+
+    /* 모달 스타일 */
+    #modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+
+    #modalContent {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
   </style>
 </head>
 <body>
@@ -53,4 +90,78 @@
   <p>1부터 100 사이의 숫자를 입력하세요:</p>
   <input type="number" id="guess" />
   <button onclick="checkGuess()">확인</button>
-  <p class="result" id="r
+  <button onclick="resetGame()">다시하기</button>
+  <button onclick="showModal()">기록 보기</button>
+
+  <p class="result" id="resultText"></p>
+  <p id="triesText"></p>
+  <p id="bestScore"></p>
+
+  <!-- 모달 -->
+  <div id="modal" onclick="hideModal()">
+    <div id="modalContent">
+      <p id="modalText">기록 없음</p>
+      <button onclick="hideModal()">닫기</button>
+    </div>
+  </div>
+
+  <script>
+    let secret = Math.floor(Math.random() * 100) + 1;
+    let tries = 0;
+
+    const best = localStorage.getItem("bestTries");
+    if (best !== null) {
+      document.getElementById("bestScore").innerText = `🏆 최고기록: ${best}번`;
+    }
+
+    function checkGuess() {
+      const input = document.getElementById("guess").value;
+      const guess = Number(input);
+      tries++;
+
+      const resultEl = document.getElementById("resultText");
+
+      if (guess < 1 || guess > 100) {
+        resultEl.innerText = "⚠️ 1~100 사이 숫자를 입력하세요.";
+        resultEl.style.color = "red";
+      } else if (guess < secret) {
+        resultEl.innerText = "너무 작아요!";
+        resultEl.style.color = "blue";
+      } else if (guess > secret) {
+        resultEl.innerText = "너무 커요!";
+        resultEl.style.color = "orange";
+      } else {
+        resultEl.innerText = `🎉 정답입니다! ${tries}번 만에 맞췄어요.`;
+        resultEl.style.color = "green";
+
+        const bestScore = localStorage.getItem("bestTries");
+        if (bestScore === null || tries < parseInt(bestScore)) {
+          localStorage.setItem("bestTries", tries);
+          document.getElementById("bestScore").innerText = `🏆 최고기록: ${tries}번`;
+        }
+      }
+
+      document.getElementById("triesText").innerText = `시도 횟수: ${tries}`;
+    }
+
+    function resetGame() {
+      secret = Math.floor(Math.random() * 100) + 1;
+      tries = 0;
+      document.getElementById("guess").value = "";
+      document.getElementById("resultText").innerText = "";
+      document.getElementById("triesText").innerText = "";
+    }
+
+    function showModal() {
+      const bestScore = localStorage.getItem("bestTries");
+      document.getElementById("modalText").innerText =
+        bestScore ? `🎯 최고기록은 ${bestScore}번 입니다.` : "기록이 없습니다.";
+      document.getElementById("modal").style.display = "flex";
+    }
+
+    function hideModal() {
+      document.getElementById("modal").style.display = "none";
+    }
+  </script>
+</body>
+</html>
