@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>로리로라의 똥싸면서 하는 게임 1탄</title>
+  <title>로이로라의 똥싸면서 하는 게임 1탄</title>
   <style>
     body {
       text-align: center;
@@ -33,6 +33,12 @@
       margin-top: 20px;
     }
 
+    #bestScore {
+      margin-top: 10px;
+      font-weight: bold;
+      color: #007700;
+    }
+
     @media (min-width: 768px) {
       input, button {
         font-size: 18px;
@@ -42,44 +48,9 @@
   </style>
 </head>
 <body>
-  <h1>로리로라의 똥싸면서 하는 게임 1탄</h1>
+  <h1>로이로라의 똥싸면서 하는 게임 1탄</h1>
   <img src="game2.png" alt="게임 이미지" />
   <p>1부터 100 사이의 숫자를 입력하세요:</p>
   <input type="number" id="guess" />
   <button onclick="checkGuess()">확인</button>
-  <p class="result" id="resultText"></p>
-  <p id="triesText"></p>
-  <button onclick="resetGame()">다시하기</button>
-
-  <script>
-    let secret = Math.floor(Math.random() * 100) + 1;
-    let tries = 0;
-
-    function checkGuess() {
-      const input = document.getElementById("guess").value;
-      const guess = Number(input);
-      tries++;
-
-      if (guess < 1 || guess > 100) {
-        document.getElementById("resultText").innerText = "⚠️ 1~100 사이 숫자를 입력하세요.";
-      } else if (guess < secret) {
-        document.getElementById("resultText").innerText = "너무 작아요!";
-      } else if (guess > secret) {
-        document.getElementById("resultText").innerText = "너무 커요!";
-      } else {
-        document.getElementById("resultText").innerText = `🎉 정답입니다! ${tries}번 만에 맞췄어요.`;
-      }
-
-      document.getElementById("triesText").innerText = `시도 횟수: ${tries}`;
-    }
-
-    function resetGame() {
-      secret = Math.floor(Math.random() * 100) + 1;
-      tries = 0;
-      document.getElementById("guess").value = "";
-      document.getElementById("resultText").innerText = "";
-      document.getElementById("triesText").innerText = "";
-    }
-  </script>
-</body>
-</html>
+  <p class="result" id="r
