@@ -88,12 +88,15 @@
   <h1>로이로라의 똥싸면서 하는 게임 1탄</h1>
   <img src="game2.png" alt="게임 이미지" />
   <p>1부터 100 사이의 숫자를 입력하세요:</p>
+
+  <!-- 결과 메시지를 위로 이동 -->
+  <p class="result" id="resultText"></p>
+
   <input type="number" id="guess" />
   <button onclick="checkGuess()">확인</button>
   <button onclick="resetGame()">다시하기</button>
   <button onclick="showModal()">기록 보기</button>
 
-  <p class="result" id="resultText"></p>
   <p id="triesText"></p>
   <p id="bestScore"></p>
 
